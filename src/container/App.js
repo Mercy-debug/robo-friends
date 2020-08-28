@@ -1,5 +1,9 @@
 import React from 'react';
-import CardList from '../component/CardList';
+import CardList from '../component/CardList/CardList';
+import SearchBox from '../component/SearchBox/SearchBox';
+// import HomePage from '../component/HomePage/Home-page';
+// import Login from '../container/Login/Login';
+import Scroll from '../component/Scroll/Scroll';
 import { robots } from '../robots';
 import './App.css';
 
@@ -8,7 +12,9 @@ class App extends React.Component {
     super();
     this.state = {
       searchField: "",
-      robots: robots
+      robots: robots,
+      isSignedIn: true,
+      pages: 'login'
     }
   }
 
@@ -16,21 +22,35 @@ class App extends React.Component {
     this.setState({ searchField: event.target.value })
   }
 
+  isSignedIn = (event) => {
+    this.setState({ isSignedIn: false })
+  }
+
+  swtichPage = () => {
+    this.setState({ pages: 'home'})
+  }
+
   render() {
     const filteredRobots = this.state.robots.filter((item) => {
       return item.name.toLowerCase().includes(this.state.searchField.toLowerCase())
-    })
+    });
+
+
     return (
       <div className="App">
-       <h1 className='f1'>ROBOFRIENDS</h1>
-       <div className='pa2'>
-        <input 
-          type='text' 
-          placeholder='search robots'
-          className='pa3 ba b--green bg-lightest-blue'
-          onChange={ this.onInputChange }/>
-       </div>
-       <CardList robots={ filteredRobots }/>
+        <h1 className='f1'>ROBOFRIENDS</h1>
+        <SearchBox onInputChange={this.onInputChange} />
+        {/* {
+          this.state.pages === 'login' ?
+            <Login swtichPage={this.swtichPage}/> : null
+        } */}
+        {
+          !filteredRobots.length ?
+            <h1 className='f4 mt6'>No Result Found</h1> : null
+        }
+        <Scroll>
+          <CardList robots={filteredRobots} />
+        </Scroll>
       </div>
     );
   }

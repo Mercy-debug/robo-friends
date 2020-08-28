@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './Card';
+import Card from '../Card/Card';
 
 const CardList = ({ robots }) => {
   return (
@@ -7,10 +7,10 @@ const CardList = ({ robots }) => {
       {
         robots.map((item) => {
           return (
-            <Card 
-              key={ item.id } 
-              name={ item.name } 
-              email={ item.email }
+            <Card
+              key={item.id}
+              name={item.name}
+              email={item.email}
             />
           );
         })
