@@ -4,7 +4,6 @@ import SearchBox from '../component/SearchBox/SearchBox';
 // import HomePage from '../component/HomePage/Home-page';
 // import Login from '../container/Login/Login';
 import Scroll from '../component/Scroll/Scroll';
-import { robots } from '../robots';
 import './App.css';
 
 class App extends React.Component {
@@ -12,10 +11,23 @@ class App extends React.Component {
     super();
     this.state = {
       searchField: "",
-      robots: robots,
+      robots: [],
       isSignedIn: true,
       pages: 'login'
     }
+  }
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users', {
+      method: "get"
+    })
+    .then(response => response.json())
+    .then(data => {
+      this.setState({ robots: data})
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   onInputChange = (event) => {
@@ -34,7 +46,6 @@ class App extends React.Component {
     const filteredRobots = this.state.robots.filter((item) => {
       return item.name.toLowerCase().includes(this.state.searchField.toLowerCase())
     });
-
 
     return (
       <div className="App">
